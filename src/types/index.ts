@@ -9,7 +9,6 @@ export interface IProduct {
 
 export interface ICart {
 	products: IProduct[];
-	total: number;
 	paymentMethod: string;
 	address: string;
 	phoneNumber: string;
@@ -18,6 +17,9 @@ export interface ICart {
 	setPaymentMethod: (paymentMethod: string) => void;
 	setAddress: (address: string) => void;
 	setPhoneNumber: (phoneNumber: string) => void;
+    getItemsTotal: () => number;
+    getItemsCount: () => number;
+    isValid: () => boolean;
 }
 
 export interface IView {
@@ -39,4 +41,11 @@ export interface IApiProductList {
 
 export interface IApiProduct {
 	load: () => Promise<IProduct>;
+}
+
+export interface IAppState{
+    catalog: IProduct[];
+    basket: string[];
+    preview: string;
+    cart: ICart;
 }
