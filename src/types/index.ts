@@ -17,18 +17,19 @@ export interface ICart {
 	setPaymentMethod: (paymentMethod: string) => void;
 	setAddress: (address: string) => void;
 	setPhoneNumber: (phoneNumber: string) => void;
-    getItemsTotal: () => number;
-    getItemsCount: () => number;
-    isValid: () => boolean;
+	getItemsTotal: () => number;
+	getItemsCount: () => number;
+	isValid: () => boolean;
 }
 
-export interface IView {
+export interface IView<T> {
 	element: HTMLElement;
-	render: (view: unknown) => HTMLElement;
+	render: (data?: T) => HTMLElement;
+	copy: () => IView<T>;
 }
 
-export interface IViewConstructor {
-	new: (view: IView) => IView;
+export interface IViewConstructor<T, S> {
+	new: (root: HTMLElement, settings: S) => IView<T>;
 }
 
 export interface IApiOrder {
@@ -43,9 +44,3 @@ export interface IApiProduct {
 	load: () => Promise<IProduct>;
 }
 
-export interface IAppState{
-    catalog: IProduct[];
-    basket: string[];
-    preview: string;
-    cart: ICart;
-}
