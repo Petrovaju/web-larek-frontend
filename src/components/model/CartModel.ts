@@ -1,22 +1,10 @@
-import { IProduct } from '../../types';
+import { IProduct, ICart } from '../../types';
 
-export class CartModel {
-	paymentMethod: string;
-	address: string;
-	phoneNumber: string;
-	email: string;
-	constructor(
-		protected _products?: IProduct[],
-		paymentMethod?: string,
-		address?: string,
-		phoneNumber?: string,
-		email?: string
-	) {
+export class CartModel implements ICart {
+	protected _products: IProduct[];
+
+	constructor() {
 		this._products = [];
-		this.paymentMethod = paymentMethod || '';
-		this.address = address || '';
-		this.phoneNumber = phoneNumber || '';
-		this.email = email || '';
 	}
 
 	addProduct(product: IProduct) {
@@ -47,7 +35,7 @@ export class CartModel {
 		return this._products.reduce((acc, item) => acc + item.price, 0);
 	}
 
-    resetItems(){
-        this._products = []
-    }
+	resetItems() {
+		this._products = [];
+	}
 }

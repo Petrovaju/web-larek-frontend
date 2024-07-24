@@ -2,30 +2,17 @@ import { ensureElement } from '../../utils/utils';
 import { IEvents } from '../base/events';
 import { BaseView } from './BaseView';
 
-export interface IContactsState {
-	phone: string;
-	email: string;
-}
-
 interface IContactsAction {
 	onClick: (evt: Event) => void;
-}
-
-class ContactsState implements IContactsState {
-	phone: string;
-	email: string;
-
-	constructor(phone: string, email: string) {
-		this.phone = phone;
-		this.email = email;
-	}
 }
 
 export class ContactsView extends BaseView {
 	protected _emailInput: HTMLInputElement;
 	protected _phoneInput: HTMLInputElement;
-	protected _state: IContactsState;
 	protected _button: HTMLButtonElement;
+	protected _errorContainer: HTMLElement;
+	protected _events: IEvents;
+	element: HTMLFormElement;
 
 	constructor(
 		template: HTMLTemplateElement,
@@ -34,7 +21,9 @@ export class ContactsView extends BaseView {
 	) {
 		super(template);
 
-		this._state = new ContactsState('', '');
+		this.element = this.element as HTMLFormElement;
+
+		this._events = events;
 
 		this._emailInput = ensureElement<HTMLInputElement>(
 			'[name="email"]',
@@ -47,35 +36,39 @@ export class ContactsView extends BaseView {
 
 		this._button = ensureElement<HTMLButtonElement>('.button', this.element);
 
+		this._errorContainer = ensureElement<HTMLElement>(
+			'.form__errors',
+			this.element
+		);
+
 		this._button.addEventListener('click', action.onClick);
 
 		this._emailInput.addEventListener('input', (e: Event) => {
 			const target = e.target as HTMLInputElement;
 			this._emailInput.textContent = target.value;
-			this._state.email = target.value;
-			events.emit('contacts:change', this._state);
+			events.emit('contactsForm.emailInput:change', { value: target.value });
 		});
 
 		this._phoneInput.addEventListener('input', (e: Event) => {
 			const target = e.target as HTMLInputElement;
 			this._phoneInput.textContent = target.value;
-			this._state.phone = target.value;
-			events.emit('contacts:change', this._state);
+			events.emit('contactsForm.phoneInput:change', {
+				value: target.value,
+			});
 		});
 	}
 
-	validate() {
-		if (this._state.email === '' || this._state.phone === '') {
-			this._button.disabled = true;
-		} else {
-			this._button.disabled = false;
-		}
+	set valid(valid: boolean) {
+		this._button.disabled = !valid;
+	}
+
+	set error(errorText: string) {
+		this._errorContainer.textContent = errorText;
 	}
 
 	reset() {
-		this._phoneInput.value = '';
-		this._emailInput.value = '';
-		this._state.email = '';
-		this._state.phone = '';
+		this.element.reset();
+		this.valid = false;
+		this.error = '';
 	}
 }

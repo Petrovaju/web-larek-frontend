@@ -1,4 +1,4 @@
-import { ICart, IProduct } from '../../types';
+import { IAddressState, ICart, IContactsState, IProduct } from '../../types';
 import { Api } from '../base/api';
 
 export class ApiOrderModel extends Api {
@@ -6,19 +6,31 @@ export class ApiOrderModel extends Api {
 		super(baseUrl, options);
 	}
 
-	postOrder(data: ICart): Promise<object> {
-		const bodyObject = this._mapModelToBodyObject(data);
+	postOrder(
+		productsData: ICart,
+		addressData: IAddressState,
+		contactsData: IContactsState
+	): Promise<object> {
+		const bodyObject = this._mapModelsToBodyObject(
+			productsData,
+			addressData,
+			contactsData
+		);
 		return this.post(`/order`, bodyObject).then((response: object) => response);
 	}
 
-	_mapModelToBodyObject(data: ICart): object {
+	_mapModelsToBodyObject(
+		productsData: ICart,
+		addressData: IAddressState,
+		contactsData: IContactsState
+	): object {
 		return {
-			payment: data.paymentMethod,
-			email: data.email,
-			phone: data.phoneNumber,
-			address: data.address,
-			total: data.getItemsTotal(),
-			items: data.products.map<string>((product: IProduct) => {
+			payment: addressData.paymentMethod,
+			email: contactsData.email,
+			phone: contactsData.phone,
+			address: addressData.address,
+			total: productsData.getItemsTotal(),
+			items: productsData.products.map<string>((product: IProduct) => {
 				return product.id;
 			}),
 		};

@@ -40,13 +40,8 @@ export class ProductView extends BaseView {
 		}
 	}
 
-
 	set title(title: string) {
 		this._title.textContent = title;
-	}
-
-	get title(): string {
-		return this._title.textContent || '';
 	}
 
 	set image(path: string) {
@@ -68,10 +63,6 @@ export class ProductView extends BaseView {
 		}
 	}
 
-	get price(): string {
-		return this._price.textContent || '';
-	}
-
 	set category(category: string) {
 		if (this._category) {
 			this._category.textContent = category;
@@ -88,21 +79,13 @@ export class ProductView extends BaseView {
 		}
 	}
 
-	get category(): string {
-		return this._category.textContent || '';
-	}
-
 	set description(description: string) {
 		if (this._description) {
 			this._description.textContent = description;
 		}
 	}
 
-	get description(): string {
-		return this._description.textContent || '';
-	}
-
-	set button(buttonText: string) {
+	set buttonText(buttonText: string) {
 		if (this._button) {
 			this._button.textContent = buttonText;
 		}

@@ -9,16 +9,11 @@ export interface IProduct {
 
 export interface ICart {
 	products: IProduct[];
-	paymentMethod: string;
-	address: string;
-	phoneNumber: string;
-	email: string;
 	addProduct: (product: IProduct) => void;
 	deleteProduct: (product: IProduct) => void;
 	getItemsTotal: () => number;
 	getItemsCount: () => number;
 }
-
 
 export interface IApiOrder {
 	sendOrder: (cart: ICart) => Promise<void>;
@@ -30,4 +25,18 @@ export interface IApiProductList {
 
 export interface IApiProduct {
 	load: () => Promise<IProduct>;
+}
+
+export interface IFormInputChangeEvent {
+	value: string;
+}
+
+export interface IAddressState {
+	paymentMethod: string;
+	address: string;
+}
+
+export interface IContactsState {
+	email: string;
+	phone: string;
 }

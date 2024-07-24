@@ -13,7 +13,7 @@ export abstract class BaseView {
 		}
 	}
 
-	render(data: unknown): HTMLElement {
+	render(data: object): HTMLElement {
 		if (typeof data === 'object') {
 			Object.assign(this, data);
 		}
